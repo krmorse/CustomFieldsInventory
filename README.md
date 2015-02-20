@@ -1,8 +1,11 @@
-CustomFields
+Custom Fields Inventory
 =========================
 
 ## Overview
 
+This app shows all of the custom fields defined on the various types in the current workspace.
+
+![Screenshot](screenshot.png)
 
 ## License
 
