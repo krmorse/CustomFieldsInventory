@@ -32,6 +32,7 @@ Ext.define('CustomFieldsInventory', {
                 xtype: 'rallygrid',
                 margin: '20px',
                 title: typeDef.get('DisplayName'),
+                showRowActionsColumn: false,
                 store: typeDef.getCollection('Attributes', {
                     fetch: ['Name', 'CreationDate', 'Type', 'Required', 'Hidden'],
                     filters: [{property: 'Custom', value: true}],
