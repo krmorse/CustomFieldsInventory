@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CustomFieldsInventory</title>
+
+    <script type="text/javascript" src="/apps/2.0/sdk.js"></script>
+
+    <script type="text/javascript">
+        Rally.onReady(function () {
+                Ext.define('CustomFieldsInventory', {
+    extend: 'Rally.app.App',
+    componentCls: 'app',
+
+    launch: function () {
+        Ext.create('Rally.data.wsapi.Store', {
+            model: 'TypeDefinition',
+            fetch: ['Attributes', 'DisplayName'],
+            filters: [
+                Rally.data.wsapi.Filter.or(
+                    _.map(['Defect', 'Defect Suite',
+                        'Test Case', 'Test Case Result',
+                        'Hierarchical Requirement', 'Portfolio Item',
+                        'Task'], function (name) {
+                        return {
+                            property: 'Name',
+                            value: name
+                        };
+                    })
+                )
+            ],
+            sorters: [{property: 'Name'}]
+        }).load().then({
+            success: this._onTypeDefsLoaded,
+            scope: this
+        });
+    },
+
+    _onTypeDefsLoaded: function (typeDefs) {
+        _.each(typeDefs, function (typeDef) {
+            this.add({
+                xtype: 'rallygrid',
+                margin: '20px',
+                title: typeDef.get('DisplayName'),
+                store: typeDef.getCollection('Attributes', {
+                    fetch: ['Name', 'CreationDate', 'Type', 'Required', 'Hidden'],
+                    filters: [{property: 'Custom', value: true}],
+                    pageSize: 10,
+                    sorters: [{property: 'CreationDate', direction: 'DESC'}]
+                }),
+                columnCfgs: [
+                    'Name',
+                    'CreationDate',
+                    'Type',
+                    'Required',
+                    'Hidden'
+                ],
+                pagingToolbarCfg: {
+                    pageSizes: [10, 25, 50]
+                }
+            });
+        }, this);
+    }
+});
+
+
+            Rally.launchApp('CustomFieldsInventory', {
+                name:"CustomFieldsInventory",
+	            parentRepos:""
+            });
+
+        });
+    </script>
+
+
+
+    <style type="text/css">
+        .app {
+  /* Add app styles here */
+}
+
+    </style>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+   "name": "CustomFieldsInventory",
+   "className": "CustomFieldsInventory",
+   "server": "http://localhost:7001",
+   "sdk": "2.0",
+   "javascript": [
+      "App.js"
+   ],
+   "css": [
+      "app.css"
+   ]
+}
